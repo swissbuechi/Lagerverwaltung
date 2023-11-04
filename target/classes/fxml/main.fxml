@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="de.mobile.university.WarehouseManager.gui.controller.MainController">
+    <top>
+        <VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
+            <MenuBar fx:id="topMenu" style="-fx-background-color: #1c313a;" BorderPane.alignment="CENTER">
+                <Menu mnemonicParsing="false" text="Help">
+                    <MenuItem mnemonicParsing="false" onAction="#openAboutButton" text="About"/>
+                </Menu>
+            </MenuBar>
+            <Label fx:id="dateLabel" style="-fx-font-weight: bold;"/>
+        </VBox>
+    </top>
+</BorderPane>

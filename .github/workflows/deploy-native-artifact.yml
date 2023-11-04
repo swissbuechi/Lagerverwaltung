@@ -1,0 +1,53 @@
+name: Binary Artifacts native
+
+on:
+  workflow_dispatch:
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+    name: graalvm ${{ matrix.graalvm_version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+#          - os: ubuntu-latest
+#          - asset_name: linux-amd64
+#            executable-suffix: '.dep'
+#          - os: ubuntu-latest
+#            executable-suffix: '.rpm'
+          - os: macos-latest
+            asset_name: macos-amd64
+            executable-suffix: .dmg
+#          - os: windows-latest
+#            asset_name: windows-amd64
+#            executable-suffix: '.msi'
+#          - os: windows-latest
+#            executable-suffix: '.exe'
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'liberica'
+          java-version: '11'
+          java-package: 'jdk+fx'
+          run: mvn -B package --file pom.xml
+
+      - name: Build Native Binary
+        run: mvn -Pnative package -DskipTests=true
+
+      - name: Upload archive
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.asset_name }}${{ matrix.executable-suffix }}
+          path: target/${{ github.event.repository.name }}-${{ github.ref_name }}${{ matrix.executable-suffix }
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/app${{ matrix.executable-suffix }}
+          asset_name: ${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.asset_name }}${{ matrix.executable-suffix }}
+          tag: ${{ github.ref }}
