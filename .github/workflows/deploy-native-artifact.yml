@@ -1,4 +1,4 @@
-name: Binary Artifacts native
+name: Build installers
 
 on:
   workflow_dispatch:
@@ -7,24 +7,24 @@ on:
 
 jobs:
   build:
-    name: graalvm ${{ matrix.graalvm_version }} on ${{ matrix.os }}
+    name: Build installer on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         include:
-#          - os: ubuntu-latest
-#          - asset_name: linux-amd64
-#            executable-suffix: '.dep'
-#          - os: ubuntu-latest
-#            executable-suffix: '.rpm'
+          #          - os: ubuntu-latest
+          #          - asset_name: linux-amd64
+          #            executable-suffix: '.dep'
+          #          - os: ubuntu-latest
+          #            executable-suffix: '.rpm'
           - os: macos-latest
             asset_name: macos-amd64
             executable-suffix: .dmg
-#          - os: windows-latest
-#            asset_name: windows-amd64
-#            executable-suffix: '.msi'
-#          - os: windows-latest
-#            executable-suffix: '.exe'
+    #          - os: windows-latest
+    #            asset_name: windows-amd64
+    #            executable-suffix: '.msi'
+    #          - os: windows-latest
+    #            executable-suffix: '.exe'
 
     steps:
       - uses: actions/checkout@v4
@@ -33,21 +33,20 @@ jobs:
           distribution: 'liberica'
           java-version: '11'
           java-package: 'jdk+fx'
-          run: mvn -B package --file pom.xml
 
-      - name: Build Native Binary
+      - name: Build installer
         run: mvn -Pnative package -DskipTests=true
 
-      - name: Upload archive
+      - name: Upload installer to job
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.asset_name }}${{ matrix.executable-suffix }}
-          path: target/${{ github.event.repository.name }}-${{ github.ref_name }}${{ matrix.executable-suffix }}
+          path: target/${{ github.event.repository.name }}_${{ github.ref_name }}${{ matrix.executable-suffix }}
 
-      - name: Upload binaries to release
+      - name: Upload installer to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/app${{ matrix.executable-suffix }}
+          file: target/${{ github.event.repository.name }}_${{ github.ref_name }}${{ matrix.executable-suffix }}
           asset_name: ${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.asset_name }}${{ matrix.executable-suffix }}
           tag: ${{ github.ref }}
