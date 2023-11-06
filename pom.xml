@@ -22,13 +22,14 @@
                             <winConfig>
                                 <icoFile>build/logo.ico</icoFile>
                                 <generateSetup>true</generateSetup>
-                                <generateMsi>true</generateMsi>
+                                <generateMsi>false</generateMsi>
                                 <generateMsm>false</generateMsm>
                             </winConfig>
                             <linuxConfig>
                                 <pngFile>build/logo.png</pngFile>
                                 <generateDeb>true</generateDeb>
                                 <generateRpm>true</generateRpm>
+                                <generateAppImage>false</generateAppImage>
                             </linuxConfig>
                             <macConfig>
                                 <icnsFile>build/logo.icns</icnsFile>
@@ -71,11 +72,5 @@
             <artifactId>maven-dependency-plugin</artifactId>
             <version>3.6.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/net.harawata/appdirs -->
-        <!--        <dependency>-->
-        <!--            <groupId>com.jfoenix</groupId>-->
-        <!--            <artifactId>jfoenix</artifactId>-->
-        <!--            <version>9.0.10</version>-->
-        <!--        </dependency>-->
     </dependencies>
 </project>

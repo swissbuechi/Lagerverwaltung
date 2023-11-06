@@ -13,18 +13,20 @@ jobs:
       matrix:
         include:
           #          - os: ubuntu-latest
-          #          - asset_name: linux-amd64
-          #            executable-suffix: '.dep'
+          #            asset_name: linux-amd64
+          #            executable-suffix: .rpm
           #          - os: ubuntu-latest
-          #            executable-suffix: '.rpm'
-          - os: macos-latest
-            asset_name: macos-amd64
-            executable-suffix: .dmg
-    #          - os: windows-latest
-    #            asset_name: windows-amd64
-    #            executable-suffix: '.msi'
-    #          - os: windows-latest
-    #            executable-suffix: '.exe'
+          #            asset_name: linux-amd64
+          ##            executable-suffix: .deb
+          #          - os: macos-latest
+          #            asset_name: macos-amd64
+          #            executable-suffix: .dmg
+          #          - os: windows-latest
+          #            asset_name: windows-amd64
+          #            executable-suffix: .msi
+          - os: windows-latest
+            asset_name: windows-amd64
+            executable-suffix: .exe
 
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +37,7 @@ jobs:
           java-package: 'jdk+fx'
 
       - name: Build installer
-        run: mvn -Pnative package -DskipTests=true
+        run: mvn package -DskipTests=true
 
       - name: Upload installer to job
         uses: actions/upload-artifact@v3

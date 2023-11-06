@@ -1,12 +1,12 @@
-package de.mobile.university.WarehouseManager.gui.model;
+package de.mobile.university.WarehouseManager.model;
+
+import de.mobile.university.WarehouseManager.exception.DrinkQuantitiyNegativeException;
 
 public class Drink {
     private String name;
     private int quantity;
 
-    public Drink(String name, int quantity) {
-        this.name = name;
-        this.quantity = quantity;
+    public Drink() {
     }
 
     public String getName() {
@@ -22,6 +22,9 @@ public class Drink {
     }
 
     public void setQuantity(int quantity) {
+        if (quantity < 0) {
+            throw new DrinkQuantitiyNegativeException(this.name);
+        }
         this.quantity = quantity;
     }
 }

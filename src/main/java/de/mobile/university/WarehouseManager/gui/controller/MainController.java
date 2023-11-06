@@ -1,7 +1,6 @@
 package de.mobile.university.WarehouseManager.gui.controller;
 
 import de.mobile.university.WarehouseManager.config.AppConfig;
-import de.mobile.university.WarehouseManager.gui.view.AlertHelper;
 import de.mobile.university.WarehouseManager.gui.view.DrinkManagementView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -28,13 +27,5 @@ public class MainController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         String currentDate = dateFormat.format(new Date());
         dateLabel.setText(currentDate);
-    }
-
-    public void openAboutButton() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(AppConfig.APP_NAME + " " + AppConfig.VERSION);
-        sb.append("\nDeveloped by ").append(AppConfig.AUTHOR);
-        sb.append("\nStorehouse icons created by srip - Flaticon https://www.flaticon.com/free-icons/storehouse");
-        new AlertHelper(Alert.AlertType.INFORMATION, "About", sb.toString());
     }
 }
