@@ -9,6 +9,11 @@ public class Drink {
     public Drink() {
     }
 
+    public Drink(String name, int quantity) {
+        this.name = name;
+        this.quantity = quantity;
+    }
+
     public String getName() {
         return name;
     }
@@ -22,9 +27,7 @@ public class Drink {
     }
 
     public void setQuantity(int quantity) {
-        if (quantity < 0) {
-            throw new DrinkQuantitiyNegativeException(this.name);
-        }
         this.quantity = quantity;
     }
+
 }

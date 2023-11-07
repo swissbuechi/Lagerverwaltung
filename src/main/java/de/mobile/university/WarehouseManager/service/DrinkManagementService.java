@@ -1,7 +1,9 @@
 package de.mobile.university.WarehouseManager.service;
 
+import de.mobile.university.WarehouseManager.config.AppConfig;
 import de.mobile.university.WarehouseManager.exception.DrinkDuplicateException;
 import de.mobile.university.WarehouseManager.exception.DrinkNotFoundException;
+import de.mobile.university.WarehouseManager.exception.DrinkQuantitiyNegativeException;
 import de.mobile.university.WarehouseManager.model.Drink;
 import de.mobile.university.WarehouseManager.storage.CsvDrinkStorageService;
 import de.mobile.university.WarehouseManager.storage.DrinkStorageService;
@@ -30,7 +32,7 @@ public enum DrinkManagementService {
     }
 
     public ObservableList<Drink> getDrinks() {
-        drinks = FXCollections.observableArrayList(drinkStorageService.load());
+        drinks = FXCollections.observableArrayList(drinkStorageService.load(AppConfig.INVENTORY_FILE));
         sortByQuantity();
         return drinks;
     }
@@ -40,15 +42,14 @@ public enum DrinkManagementService {
                 .thenComparing(Drink::getName));
     }
 
-    public void updateQuantity(String name, int quantity) {
+    public synchronized void updateQuantity(String name, int quantity) {
         int index = findIndexByName(name);
         if (index != -1) {
-            drinks.add(
-                    new Drink() {{
-                        setName(name);
-                        setQuantity(quantity);
-                    }}
-            );
+            int newQuantity = drinks.get(index).getQuantity() + quantity;
+            if (newQuantity < 0) {
+                throw new DrinkQuantitiyNegativeException(name);
+            }
+            drinks.add(new Drink(name, newQuantity));
             drinks.remove(index);
             sortByQuantity();
             drinkStorageService.save(drinks);

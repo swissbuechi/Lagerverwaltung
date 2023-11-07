@@ -5,15 +5,12 @@ import de.mobile.university.WarehouseManager.service.DrinkManagementService;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-
 
 public class DrinkManagementView extends GridPane {
 
-
-    private DrinkManagementService drinkManagementService;
-
-    private TableView tableView;
+    private final DrinkManagementService drinkManagementService;
 
     public DrinkManagementView() {
         drinkManagementService = DrinkManagementService.INSTANCE.getInstance();
@@ -24,21 +21,44 @@ public class DrinkManagementView extends GridPane {
     }
 
     private void createDrinkList() {
-        tableView = new TableView<>();
+        TableView<Drink> tableView = new TableView<>();
         tableView.setMinHeight(600);
         tableView.setMinWidth(1400);
 
-//        tableView.getSelectionModel().selectedItemProperty().addListener(
-//                (obs, oldSelection, newSelection) -> change(obs, oldSelection, newSelection));
+        TableColumn<Drink, String> nameCol = new TableColumn<>("Name");
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        TableColumn name = new TableColumn("Name");
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn<Drink, Integer> quantityCol = new TableColumn<>("Quantity");
+        quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        TableColumn quantity = new TableColumn("Quantity");
-        quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        TableColumn<Drink, Void> changeCol = new TableColumn<>("Change");
+        changeCol.setCellFactory(col -> new TableCell<Drink, Void>() {
+            private final TextField textField = new TextField();
 
-        tableView.getColumns().addAll(name, quantity);
+            {
+                textField.setOnKeyPressed(e -> {
+                    if (e.getCode() == KeyCode.ENTER) {
+                        int changeValue = Integer.parseInt(textField.getText());
+                        Drink drink = getTableView().getItems().get(getIndex());
+                        drinkManagementService.updateQuantity(drink.getName(), changeValue);
+                    }
+                });
+            }
 
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(textField);
+                    textField.setText(""); // Clear the text field for reuse
+                }
+            }
+        });
+
+        tableView.getColumns().addAll(nameCol, quantityCol, changeCol);
+        tableView.setEditable(true);
         tableView.setItems(drinkManagementService.getDrinks());
 
         add(tableView, 0, 0, 2, 1);
