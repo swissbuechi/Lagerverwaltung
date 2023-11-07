@@ -14,6 +14,7 @@ public class ExternalImportService extends Thread {
     private DrinkStorageService drinkStorageService;
 
     public ExternalImportService() {
+        super("ExternalImportServiceThread");
         drinkManagementService = DrinkManagementService.INSTANCE.getInstance();
         drinkStorageService = new CsvDrinkStorageService();
     }

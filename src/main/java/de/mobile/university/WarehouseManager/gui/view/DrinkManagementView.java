@@ -59,6 +59,14 @@ public class DrinkManagementView extends GridPane {
 
         tableView.getColumns().addAll(nameCol, quantityCol, changeCol);
         tableView.setEditable(true);
+
+        // Disable sorting
+        nameCol.setSortable(false);
+        quantityCol.setSortable(false);
+        changeCol.setSortable(false);
+
+        // Disable selection
+        tableView.setSelectionModel(null);
         tableView.setItems(drinkManagementService.getDrinks());
 
         add(tableView, 0, 0, 2, 1);

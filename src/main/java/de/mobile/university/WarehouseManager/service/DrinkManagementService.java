@@ -25,6 +25,8 @@ public enum DrinkManagementService {
     private DrinkManagementService() {
         drinks = FXCollections.observableArrayList(new ArrayList<>());
         drinkStorageService = new CsvDrinkStorageService();
+        drinks = FXCollections.observableArrayList(drinkStorageService.load(AppConfig.INVENTORY_FILE));
+        sortByQuantity();
     }
 
     public DrinkManagementService getInstance() {
@@ -32,12 +34,11 @@ public enum DrinkManagementService {
     }
 
     public ObservableList<Drink> getDrinks() {
-        drinks = FXCollections.observableArrayList(drinkStorageService.load(AppConfig.INVENTORY_FILE));
-        sortByQuantity();
         return drinks;
     }
 
     private void sortByQuantity() {
+        System.out.println("Sorting drinks");
         this.drinks.sort(Comparator.comparingInt(Drink::getQuantity)
                 .thenComparing(Drink::getName));
     }
@@ -46,6 +47,7 @@ public enum DrinkManagementService {
         int index = findIndexByName(name);
         if (index != -1) {
             int newQuantity = drinks.get(index).getQuantity() + quantity;
+            System.out.println("Updating quantity of " + name + " to + (" + quantity + ") = (" + newQuantity + ")");
             if (newQuantity < 0) {
                 throw new DrinkQuantitiyNegativeException(name);
             }

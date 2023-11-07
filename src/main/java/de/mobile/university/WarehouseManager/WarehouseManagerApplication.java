@@ -11,7 +11,7 @@ public class WarehouseManagerApplication {
 
     private static void start() {
         ExternalImportService ExternalImportService = new ExternalImportService();
-        ExternalImportService.start();
+//        ExternalImportService.start();
         MainGui mainGui = new MainGui();
         mainGui.show();
     }
