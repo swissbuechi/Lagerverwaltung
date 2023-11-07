@@ -5,6 +5,9 @@ on:
   release:
     types: [ published ]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build installer on ${{ matrix.os }}
@@ -12,9 +15,9 @@ jobs:
     strategy:
       matrix:
         include:
-#          - os: ubuntu-latest
-#            asset_name: linux-amd64
-#            executable-suffix: .rpm
+          #          - os: ubuntu-latest
+          #            asset_name: linux-amd64
+          #            executable-suffix: .rpm
           - os: ubuntu-latest
             asset_name: linux-amd64
             executable-suffix: .deb
@@ -24,11 +27,12 @@ jobs:
           - os: windows-latest
             asset_name: windows-amd64
             executable-suffix: .msi
-#          - os: windows-latest
-#            asset_name: windows-amd64
-#            executable-suffix: .exe
+    #          - os: windows-latest
+    #            asset_name: windows-amd64
+    #            executable-suffix: .exe
 
     steps:
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
         with:
