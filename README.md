@@ -14,10 +14,7 @@
 - [lager.csv](./lager.csv.sample)
 - [done.csv](./done.csv.sample)
 
-## Demo
-
-
 ## Credits
 
-<a href="https://www.flaticon.com/free-icons/storehouse" title="storehouse icons">Storehouse icons created by srip -
+- Icon: <a href="https://www.flaticon.com/free-icons/storehouse" title="storehouse icons">Storehouse icons created by srip -
 Flaticon</a>
