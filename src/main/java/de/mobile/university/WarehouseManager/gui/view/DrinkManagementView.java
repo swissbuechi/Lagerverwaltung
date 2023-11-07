@@ -18,7 +18,7 @@ public class DrinkManagementView extends GridPane {
 
     public DrinkManagementView() {
         drinkManagementService = DrinkManagementService.INSTANCE.getInstance();
-        drinkAddView = new DrinkAddView(drinkManagementService);
+        drinkAddView = new DrinkAddView();
         createDrinkList();
         createTotalQuantityLabel();
         createAddButton();

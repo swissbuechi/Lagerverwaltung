@@ -81,7 +81,7 @@ public enum DrinkManagementService {
     }
 
     private boolean drinkAlreadyExists(String name) {
-        if (drinks.stream().anyMatch(d -> Objects.equals(d.getName(), name))) {
+        if (drinks.stream().anyMatch(d -> Objects.equals(d.getName().toLowerCase(), name.toLowerCase()))) {
             throw new DrinkDuplicateException(name);
         }
         return false;

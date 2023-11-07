@@ -2,7 +2,6 @@ package de.mobile.university.WarehouseManager.gui;
 
 import de.mobile.university.WarehouseManager.config.AppConfig;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,7 +27,7 @@ public class MainGui extends Application {
     }
 
     private void buildMainView(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
         primaryStage.setTitle(AppConfig.APP_NAME);
         primaryStage.setMinWidth(400);
         primaryStage.setMinHeight(300);
