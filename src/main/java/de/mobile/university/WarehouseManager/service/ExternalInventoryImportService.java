@@ -3,7 +3,7 @@ package de.mobile.university.WarehouseManager.service;
 import de.mobile.university.WarehouseManager.config.AppConfig;
 import de.mobile.university.WarehouseManager.exception.DrinkDuplicateException;
 import de.mobile.university.WarehouseManager.exception.DrinkNotFoundException;
-import de.mobile.university.WarehouseManager.exception.DrinkQuantitiyNegativeException;
+import de.mobile.university.WarehouseManager.exception.DrinkQuantityNegativeException;
 import de.mobile.university.WarehouseManager.storage.CsvDrinkStorageService;
 import de.mobile.university.WarehouseManager.storage.DrinkStorageService;
 import javafx.application.Platform;
@@ -42,7 +42,7 @@ public class ExternalInventoryImportService extends Thread {
                 Platform.runLater(() -> {
                     try {
                         drinkManagementService.updateQuantity(drink.getName(), drink.getQuantity());
-                    } catch (DrinkQuantitiyNegativeException | DrinkNotFoundException | DrinkDuplicateException e) {
+                    } catch (DrinkQuantityNegativeException | DrinkNotFoundException | DrinkDuplicateException e) {
                         e.printStackTrace();
                     }
                 });

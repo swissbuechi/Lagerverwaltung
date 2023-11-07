@@ -1,7 +1,5 @@
 package de.mobile.university.WarehouseManager.model;
 
-import de.mobile.university.WarehouseManager.exception.DrinkQuantitiyNegativeException;
-
 public class Drink {
     private String name;
     private int quantity;

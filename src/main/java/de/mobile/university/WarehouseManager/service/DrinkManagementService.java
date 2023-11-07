@@ -3,7 +3,7 @@ package de.mobile.university.WarehouseManager.service;
 import de.mobile.university.WarehouseManager.config.AppConfig;
 import de.mobile.university.WarehouseManager.exception.DrinkDuplicateException;
 import de.mobile.university.WarehouseManager.exception.DrinkNotFoundException;
-import de.mobile.university.WarehouseManager.exception.DrinkQuantitiyNegativeException;
+import de.mobile.university.WarehouseManager.exception.DrinkQuantityNegativeException;
 import de.mobile.university.WarehouseManager.model.Drink;
 import de.mobile.university.WarehouseManager.storage.CsvDrinkStorageService;
 import de.mobile.university.WarehouseManager.storage.DrinkStorageService;
@@ -57,7 +57,7 @@ public enum DrinkManagementService {
             int newQuantity = drinks.get(index).getQuantity() + quantity;
             System.out.println("Updating quantity of: " + name + " from: " + drinks.get(index).getQuantity() + " to: " + newQuantity);
             if (newQuantity < 0) {
-                throw new DrinkQuantitiyNegativeException(name);
+                throw new DrinkQuantityNegativeException(name);
             }
             drinks.add(new Drink(name, newQuantity));
             drinks.remove(index);
@@ -80,7 +80,7 @@ public enum DrinkManagementService {
     public void add(String name, int quantity) {
         System.out.println(("Adding: " + name + " with quantity: " + quantity));
         if (quantity < 0) {
-            throw new DrinkQuantitiyNegativeException(name);
+            throw new DrinkQuantityNegativeException(name);
         }
         if (!drinkAlreadyExists(name)) {
             drinks.add(new Drink(name, quantity));
