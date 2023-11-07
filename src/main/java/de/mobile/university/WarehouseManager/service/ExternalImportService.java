@@ -6,6 +6,7 @@ import de.mobile.university.WarehouseManager.exception.DrinkNotFoundException;
 import de.mobile.university.WarehouseManager.exception.DrinkQuantitiyNegativeException;
 import de.mobile.university.WarehouseManager.storage.CsvDrinkStorageService;
 import de.mobile.university.WarehouseManager.storage.DrinkStorageService;
+import javafx.application.Platform;
 
 import java.io.File;
 
@@ -38,15 +39,13 @@ public class ExternalImportService extends Thread {
         File inventory = new File(AppConfig.EXTERNAL_INVENTORY_FILE);
         if (inventory.exists()) {
             drinkStorageService.load(AppConfig.EXTERNAL_INVENTORY_FILE).forEach(drink -> {
-                try {
-                    drinkManagementService.updateQuantity(drink.getName(), drink.getQuantity());
-                } catch (DrinkQuantitiyNegativeException e) {
-                    e.printStackTrace();
-                } catch (DrinkNotFoundException e) {
-                    e.printStackTrace();
-                } catch (DrinkDuplicateException e) {
-                    e.printStackTrace();
-                }
+                Platform.runLater(() -> {
+                    try {
+                        drinkManagementService.updateQuantity(drink.getName(), drink.getQuantity());
+                    } catch (DrinkQuantitiyNegativeException | DrinkNotFoundException | DrinkDuplicateException e) {
+                        e.printStackTrace();
+                    }
+                });
             });
             inventory.delete();
         }
