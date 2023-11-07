@@ -10,6 +10,7 @@ public class CsvDrinkStorageService implements DrinkStorageService {
 
     @Override
     public void save(List<Drink> drinks) {
+        System.out.println("Saving to file: " + AppConfig.INVENTORY_FILE);
         try (FileWriter writer = new FileWriter(AppConfig.INVENTORY_FILE)) {
             // Write headers
             writer.write("name,quantity\n");
@@ -25,6 +26,7 @@ public class CsvDrinkStorageService implements DrinkStorageService {
 
     @Override
     public List<Drink> load(String filename) {
+        System.out.println("Loading from file: " + filename);
         List<Drink> result = new ArrayList<Drink>();
         BufferedReader br = null;
         try {

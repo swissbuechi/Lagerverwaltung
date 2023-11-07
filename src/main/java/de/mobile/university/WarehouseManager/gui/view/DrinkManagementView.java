@@ -32,7 +32,7 @@ public class DrinkManagementView extends GridPane {
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         TableColumn<Drink, Void> changeCol = new TableColumn<>("Change");
-        changeCol.setCellFactory(col -> new TableCell<Drink, Void>() {
+        changeCol.setCellFactory(col -> new TableCell<>() {
             private final TextField textField = new TextField();
 
             {
@@ -64,6 +64,11 @@ public class DrinkManagementView extends GridPane {
         nameCol.setSortable(false);
         quantityCol.setSortable(false);
         changeCol.setSortable(false);
+
+        // Disable reordering
+        nameCol.setReorderable(false);
+        quantityCol.setReorderable(false);
+        changeCol.setReorderable(false);
 
         // Disable selection
         tableView.setSelectionModel(null);

@@ -38,16 +38,15 @@ public enum DrinkManagementService {
     }
 
     private void sortByQuantity() {
-        System.out.println("Sorting drinks");
-        this.drinks.sort(Comparator.comparingInt(Drink::getQuantity)
-                .thenComparing(Drink::getName));
+        System.out.println("Sorting by quantity");
+        this.drinks.sort(Comparator.comparingInt(Drink::getQuantity).thenComparing(Drink::getName));
     }
 
     public synchronized void updateQuantity(String name, int quantity) {
         int index = findIndexByName(name);
         if (index != -1) {
             int newQuantity = drinks.get(index).getQuantity() + quantity;
-            System.out.println("Updating quantity of " + name + " to + (" + quantity + ") = (" + newQuantity + ")");
+            System.out.println("Updating quantity of: " + name + " from: " + drinks.get(index).getQuantity() + " to: " + newQuantity);
             if (newQuantity < 0) {
                 throw new DrinkQuantitiyNegativeException(name);
             }
@@ -70,13 +69,9 @@ public enum DrinkManagementService {
     }
 
     public void add(String name, int quantity) {
+        System.out.println(("Adding: " + name + " with quantity: " + quantity));
         if (!drinkAlreadyExists(name)) {
-            drinks.add(
-                    new Drink() {{
-                        setName(name);
-                        setQuantity(quantity);
-                    }}
-            );
+            drinks.add(new Drink(name, quantity));
         }
         sortByQuantity();
         drinkStorageService.save(drinks);
