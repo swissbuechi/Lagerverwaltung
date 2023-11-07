@@ -12,18 +12,18 @@ jobs:
     strategy:
       matrix:
         include:
-          #          - os: ubuntu-latest
-          #            asset_name: linux-amd64
-          #            executable-suffix: .rpm
-          #          - os: ubuntu-latest
-          #            asset_name: linux-amd64
-          ##            executable-suffix: .deb
-          #          - os: macos-latest
-          #            asset_name: macos-amd64
-          #            executable-suffix: .dmg
-          #          - os: windows-latest
-          #            asset_name: windows-amd64
-          #            executable-suffix: .msi
+          - os: ubuntu-latest
+            asset_name: linux-amd64
+            executable-suffix: .rpm
+          - os: ubuntu-latest
+            asset_name: linux-amd64
+            executable-suffix: .deb
+          - os: macos-latest
+            asset_name: macos-amd64
+            executable-suffix: .dmg
+          - os: windows-latest
+            asset_name: windows-amd64
+            executable-suffix: .msi
           - os: windows-latest
             asset_name: windows-amd64
             executable-suffix: .exe
