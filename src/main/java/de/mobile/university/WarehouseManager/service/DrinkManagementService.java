@@ -10,6 +10,7 @@ import de.mobile.university.WarehouseManager.storage.DrinkStorageService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Objects;
@@ -25,8 +26,7 @@ public enum DrinkManagementService {
     private DrinkManagementService() {
         drinks = FXCollections.observableArrayList(new ArrayList<>());
         drinkStorageService = new CsvDrinkStorageService();
-        drinks = FXCollections.observableArrayList(drinkStorageService.load(AppConfig.INVENTORY_FILE));
-        sortByQuantity();
+        loadDrinks();
     }
 
     public DrinkManagementService getInstance() {
@@ -35,6 +35,15 @@ public enum DrinkManagementService {
 
     public ObservableList<Drink> getDrinks() {
         return drinks;
+    }
+
+    private void loadDrinks() {
+        if (new File(AppConfig.EXTERNAL_INVENTORY_FILE).exists()) {
+            drinks = FXCollections.observableArrayList(drinkStorageService.load(AppConfig.INVENTORY_FILE));
+            sortByQuantity();
+        } else {
+            drinks = FXCollections.observableArrayList(new ArrayList<>());
+        }
     }
 
     private void sortByQuantity() {
