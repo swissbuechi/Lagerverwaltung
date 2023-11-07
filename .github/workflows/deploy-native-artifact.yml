@@ -12,9 +12,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
-            asset_name: linux-amd64
-            executable-suffix: .rpm
+#          - os: ubuntu-latest
+#            asset_name: linux-amd64
+#            executable-suffix: .rpm
           - os: ubuntu-latest
             asset_name: linux-amd64
             executable-suffix: .deb
@@ -24,9 +24,9 @@ jobs:
           - os: windows-latest
             asset_name: windows-amd64
             executable-suffix: .msi
-          - os: windows-latest
-            asset_name: windows-amd64
-            executable-suffix: .exe
+#          - os: windows-latest
+#            asset_name: windows-amd64
+#            executable-suffix: .exe
 
     steps:
       - uses: actions/checkout@v4
