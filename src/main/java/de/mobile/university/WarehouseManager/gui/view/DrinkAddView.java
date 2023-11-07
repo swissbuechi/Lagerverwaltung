@@ -1,155 +1,66 @@
 package de.mobile.university.WarehouseManager.gui.view;
 
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import de.mobile.university.WarehouseManager.model.Drink;
+import de.mobile.university.WarehouseManager.service.DrinkManagementService;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class DrinkAddView {
 
-    private TextField tfConnectionName;
-    private TextField tfUserPrinzipalName;
-    private CheckBox checkBoxIsActive;
-    private Button buttonSaveChange;
+    private final DrinkManagementService drinkManagementService;
 
-    //    private void createAndPlaceChangeForm() {
-//        createFormFieldConnectioName();
-//        createFormFieldUserPrinzipalName();
-//        createFormFieldIsActive();
-//
-//        createFormButtonSave();
-//        createFormButtonCancel();
-//        createFormButtonAdd();
-//        createFormButtonDel();
-//    }
-
-
-    private void createFormFieldConnectioName() {
-//        Label lblConnectionName = new Label("Name");
-//        tfConnectionName = new TextField();
-//        add(lblConnectionName, 1, 1);
-//        add(tfConnectionName, 2, 1, 2, 1);
+    public DrinkAddView(DrinkManagementService drinkManagementService) {
+        this.drinkManagementService = drinkManagementService;
     }
 
-    private void createFormFieldUserPrinzipalName() {
-//        Label lblUserPrinzipalName = new Label("Username");
-//        tfUserPrinzipalName = new TextField();
-//        add(lblUserPrinzipalName, 1, 2);
-//        add(tfUserPrinzipalName, 2, 2, 2, 1);
+    public void showAddDrinkDialog() {
+        Stage addDrinkStage = new Stage();
+        addDrinkStage.initModality(Modality.APPLICATION_MODAL);
+        addDrinkStage.setTitle("Add New Drink");
+
+        // Apply stylesheet
+        Scene scene = new Scene(createGridPane(), 300, 150);
+        scene.getStylesheets().add(getClass().getResource("/css/stylesheet.css").toExternalForm());
+
+        // Apply icon
+        addDrinkStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+
+        addDrinkStage.setScene(scene);
+        addDrinkStage.showAndWait();
     }
 
+    private GridPane createGridPane() {
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(20, 20, 20, 20));
 
-    private void createFormFieldIsActive() {
-//        Label lblIsActive = new Label("Active");
-//        checkBoxIsActive = new CheckBox();
-//        add(lblIsActive, 1, 4);
-//        add(checkBoxIsActive, 2, 4, 2, 1);
+        Label nameLabel = new Label("Name:");
+        TextField nameField = new TextField();
+
+        Label quantityLabel = new Label("Quantity:");
+        TextField quantityField = new TextField();
+
+        Button addButton = new Button("Add Drink");
+        addButton.setOnAction(e -> {
+            String name = nameField.getText();
+            int quantity = Integer.parseInt(quantityField.getText());
+            drinkManagementService.add(name, quantity);
+        });
+
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(nameField, 1, 0);
+        gridPane.add(quantityLabel, 0, 1);
+        gridPane.add(quantityField, 1, 1);
+        gridPane.add(addButton, 1, 2);
+
+        return gridPane;
     }
-
-    /**
-     * Erstellt den Save Button und platziert ihn auf dem Pane
-     */
-    private void createFormButtonSave() {
-//        buttonSaveChange = new Button("Save");
-//        buttonSaveChange.setOnAction(e -> save());
-//        add(buttonSaveChange, 2, 5);
-    }
-
-    /**
-     * Erstellt den Abbrechen Button und platziert ihn auf dem Pane
-     */
-    private void createFormButtonCancel() {
-//        Button buttonCancel = new Button("Cancel");
-//        buttonCancel.setOnAction(e -> cancel());
-//        add(buttonCancel, 3, 5);
-    }
-
-    private void createFormButtonAdd() {
-//        buttonSaveChange = new Button("Add");
-//        buttonSaveChange.setOnAction(e -> add());
-//        add(buttonSaveChange, 4, 5);
-    }
-
-    private void createFormButtonDel() {
-//        buttonSaveChange = new Button("Delete");
-//        buttonSaveChange.setOnAction(e -> delete());
-//        add(buttonSaveChange, 5, 5);
-    }
-
-
-    private void change(ObservableValue obs, Object oldSelection, Object newSelection) {
-//        Drink c = (Drink) obs.getValue();
-//
-//        if (c != null) {
-//            selectedID = c.getID();
-//
-//            tfConnectionName.setText(c.getName());
-//            tfUserPrinzipalName.setText(c.getUserPrinzipalName());
-//            checkBoxIsActive.setSelected(c.isStatus());
-//        } else {
-//            cancel();
-//        }
-    }
-
-    private void save() {
-//        String connectionName = tfConnectionName.getText();
-//        String userPrinzipalName = tfUserPrinzipalName.getText();
-//
-//        if (selectedID != null
-//                && connectionName != null && connectionName.length() > 0
-//                && userPrinzipalName != null && userPrinzipalName.length() > 0) {
-//            fileService.updateConnection(new Drink(selectedID, connectionName, userPrinzipalName, checkBoxIsActive.isSelected()));
-//
-//            List<Drink> drinkList = fileService.loadConnections().getConnections();
-//            drinkObservableList.clear();
-//            drinkObservableList.addAll(drinkList);
-//        } else {
-//            System.err.println("No valid input");
-//        }
-    }
-
-
-    private void add() {
-//        String connectionName = tfConnectionName.getText();
-//        String userPrinzipalName = tfUserPrinzipalName.getText();
-//
-//        if (selectedID == null
-//                && connectionName != null && connectionName.length() > 0
-//                && userPrinzipalName != null && userPrinzipalName.length() > 0) {
-//            fileService.addConnection(new Drink(connectionName, userPrinzipalName, checkBoxIsActive.isSelected()));
-//
-//            List<Drink> drinkList = fileService.loadConnections().getConnections();
-//            drinkObservableList.clear();
-//            drinkObservableList.addAll(drinkList);
-//        } else {
-//            System.err.println("No valid input");
-//        }
-    }
-
-    private void delete() {
-//        String connectionName = tfConnectionName.getText();
-//        String userPrinzipalName = tfUserPrinzipalName.getText();
-//
-//        if (selectedID != null
-//                && connectionName != null && connectionName.length() > 0
-//                && userPrinzipalName != null && userPrinzipalName.length() > 0) {
-//            fileService.removeConnection(new Drink(selectedID, connectionName, userPrinzipalName, checkBoxIsActive.isSelected()));
-//
-//            List<Drink> drinkList = fileService.loadConnections().getConnections();
-//            drinkObservableList.clear();
-//            drinkObservableList.addAll(drinkList);
-//        } else {
-//            System.err.println("No valid input");
-//        }
-    }
-
-    private void cancel() {
-//        tableView.getSelectionModel().clearSelection();
-//        selectedID = null;
-//        tfConnectionName.setText("");
-//        tfUserPrinzipalName.setText("");
-//        checkBoxIsActive.setSelected(false);
-    }
-
 }

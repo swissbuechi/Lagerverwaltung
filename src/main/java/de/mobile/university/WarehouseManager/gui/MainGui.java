@@ -27,7 +27,7 @@ public class MainGui extends Application {
         primaryStage.setMinWidth(400);
         primaryStage.setMinHeight(300);
         primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResource("images/logo.png").toString()));
-        Scene scene = new Scene(root, 1600, 800);
+        Scene scene = new Scene(root, 1200, 600);
         scene.getStylesheets().add("css/stylesheet.css");
         primaryStage.setScene(scene);
         primaryStage.show();

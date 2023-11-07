@@ -1,9 +1,7 @@
 package de.mobile.university.WarehouseManager.gui.controller;
 
-import de.mobile.university.WarehouseManager.config.AppConfig;
 import de.mobile.university.WarehouseManager.gui.view.DrinkManagementView;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Label;
 

@@ -70,6 +70,9 @@ public enum DrinkManagementService {
 
     public void add(String name, int quantity) {
         System.out.println(("Adding: " + name + " with quantity: " + quantity));
+        if (quantity < 0) {
+            throw new DrinkQuantitiyNegativeException(name);
+        }
         if (!drinkAlreadyExists(name)) {
             drinks.add(new Drink(name, quantity));
         }
