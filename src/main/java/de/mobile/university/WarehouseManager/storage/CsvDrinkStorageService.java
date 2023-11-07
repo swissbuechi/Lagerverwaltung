@@ -12,6 +12,7 @@ public class CsvDrinkStorageService implements DrinkStorageService {
     public void save(List<Drink> drinks) {
         System.out.println("Saving to file: " + AppConfig.INVENTORY_FILE);
         try (FileWriter writer = new FileWriter(AppConfig.INVENTORY_FILE)) {
+
             // Write headers
             writer.write("name,quantity\n");
 
@@ -37,24 +38,27 @@ public class CsvDrinkStorageService implements DrinkStorageService {
         try {
             // Read first line
             String line = br.readLine();
+
             // Make sure file has correct headers
             if (line == null) throw new IllegalArgumentException("File is empty");
             if (!line.equals("name,quantity"))
                 throw new IllegalArgumentException("File has wrong columns: " + line);
+
             // Run through following lines
             while ((line = br.readLine()) != null) {
+
                 // Break line into entries using comma
                 String[] items = line.split(",");
                 try {
+
                     // If there are too many entries, throw a dummy exception, if
                     // there are too few, the same exception will be thrown later
-                    if (items.length > 4) throw new ArrayIndexOutOfBoundsException();
+                    if (items.length > 2) throw new ArrayIndexOutOfBoundsException();
+
                     // Convert data to drink record
-                    Drink drink = new Drink();
-                    drink.setName(items[0]);
-                    drink.setQuantity(Integer.parseInt(items[1]));
-                    result.add(drink);
+                    result.add(new Drink(items[0], Integer.parseInt(items[1])));
                 } catch (ArrayIndexOutOfBoundsException | NumberFormatException | NullPointerException e) {
+
                     // Caught errors indicate a problem with data format -> Print warning and continue
                     System.out.println("Invalid line: " + line);
                 }

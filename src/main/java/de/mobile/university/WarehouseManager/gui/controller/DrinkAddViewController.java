@@ -1,15 +1,13 @@
-// DrinkAddViewController.java
 package de.mobile.university.WarehouseManager.gui.controller;
 
 import de.mobile.university.WarehouseManager.service.DrinkManagementService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 public class DrinkAddViewController {
 
-    private DrinkManagementService drinkManagementService;
+    private final DrinkManagementService drinkManagementService;
 
     @FXML
     private GridPane mainPane;

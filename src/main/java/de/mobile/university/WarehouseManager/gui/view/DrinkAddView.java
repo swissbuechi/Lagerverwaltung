@@ -1,8 +1,6 @@
 // DrinkAddView.java
 package de.mobile.university.WarehouseManager.gui.view;
 
-import de.mobile.university.WarehouseManager.gui.controller.DrinkAddViewController;
-import de.mobile.university.WarehouseManager.service.DrinkManagementService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -30,6 +28,7 @@ public class DrinkAddView {
             // Apply icon
             addDrinkStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
 
+            // Set scene
             addDrinkStage.setScene(scene);
             addDrinkStage.showAndWait();
 

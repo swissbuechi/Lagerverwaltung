@@ -42,7 +42,7 @@ public class DrinkManagementView extends GridPane {
         TableColumn<Drink, Integer> quantityCol = new TableColumn<>("Quantity");
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        TableColumn<Drink, Void> changeCol = new TableColumn<>("Change");
+        TableColumn<Drink, Void> changeCol = new TableColumn<>("Inventory Change (+/-)");
         changeCol.setCellFactory(col -> new TableCell<>() {
             private final TextField textField = new TextField();
 

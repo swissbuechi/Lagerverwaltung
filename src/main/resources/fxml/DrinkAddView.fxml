@@ -20,5 +20,4 @@
     <TextField fx:id="quantityField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
     <Button text="Add Drink" onAction="#addDrink" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-
 </GridPane>

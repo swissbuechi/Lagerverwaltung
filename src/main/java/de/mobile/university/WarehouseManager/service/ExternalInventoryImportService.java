@@ -10,11 +10,11 @@ import javafx.application.Platform;
 
 import java.io.File;
 
-public class ExternalImportService extends Thread {
+public class ExternalInventoryImportService extends Thread {
     private DrinkManagementService drinkManagementService;
     private DrinkStorageService drinkStorageService;
 
-    public ExternalImportService() {
+    public ExternalInventoryImportService() {
         super("ExternalImportServiceThread");
         drinkManagementService = DrinkManagementService.INSTANCE.getInstance();
         drinkStorageService = new CsvDrinkStorageService();
@@ -27,7 +27,7 @@ public class ExternalImportService extends Thread {
     private void startSchedule() {
         while (true) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(60000);
                 importDrinks();
             } catch (InterruptedException e) {
                 e.printStackTrace();
