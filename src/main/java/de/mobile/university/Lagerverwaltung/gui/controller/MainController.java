@@ -1,6 +1,6 @@
-package de.mobile.university.WarehouseManager.gui.controller;
+package de.mobile.university.Lagerverwaltung.gui.controller;
 
-import de.mobile.university.WarehouseManager.gui.view.DrinkManagementView;
+import de.mobile.university.Lagerverwaltung.gui.view.GetraenkeUebersichtView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -17,13 +17,11 @@ public class MainController {
     private Label dateLabel;
 
     public void initialize() {
-        mainPane.setCenter(new DrinkManagementView());
-        updateDate();
+        mainPane.setCenter(new GetraenkeUebersichtView());
+        datumAktualisieren();
     }
 
-    private void updateDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String currentDate = dateFormat.format(new Date());
-        dateLabel.setText(currentDate);
+    private void datumAktualisieren() {
+        dateLabel.setText(new SimpleDateFormat("dd.MM.yyyy").format(new Date()));
     }
 }

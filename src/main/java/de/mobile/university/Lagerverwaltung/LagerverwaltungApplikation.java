@@ -1,11 +1,11 @@
-package de.mobile.university.WarehouseManager;
+package de.mobile.university.Lagerverwaltung;
 
-import de.mobile.university.WarehouseManager.gui.MainGui;
-import de.mobile.university.WarehouseManager.service.ExternalInventoryImportService;
+import de.mobile.university.Lagerverwaltung.gui.MainGui;
+import de.mobile.university.Lagerverwaltung.service.ExterneBestandsaenderungService;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class WarehouseManagerApplication extends Application {
+public class LagerverwaltungApplikation extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -13,8 +13,9 @@ public class WarehouseManagerApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        ExternalInventoryImportService externalInventoryImportService = new ExternalInventoryImportService();
-        externalInventoryImportService.start();
+        ExterneBestandsaenderungService externeBestandsaenderungService =
+                new ExterneBestandsaenderungService();
+        externeBestandsaenderungService.start();
 
         MainGui mainGui = new MainGui();
         mainGui.start(primaryStage);

@@ -1,21 +1,21 @@
 package de.mobile.university.Lagerverwaltung.service;
 
-import de.mobile.university.Lagerverwaltung.config.AppConfig;
-import de.mobile.university.Lagerverwaltung.exception.DrinkDuplicateException;
-import de.mobile.university.Lagerverwaltung.exception.DrinkNotFoundException;
-import de.mobile.university.Lagerverwaltung.exception.DrinkQuantityNegativeException;
+import de.mobile.university.Lagerverwaltung.konfiguration.AppKonfiguration;
+import de.mobile.university.Lagerverwaltung.ausnahmen.GetraenkDuplikatException;
+import de.mobile.university.Lagerverwaltung.ausnahmen.GetraenkNichtGefundenException;
+import de.mobile.university.Lagerverwaltung.ausnahmen.GetraenkeBestandNegativException;
 import javafx.application.Platform;
 
 import java.io.File;
 
-public class ExternalInventoryImportService extends Thread {
-    private final DrinkManagementService drinkManagementService;
-    private final DrinkStorageService drinkStorageService;
+public class ExterneBestandsaenderungService extends Thread {
+    private final GetraenkeVerwaltungService getraenkeVerwaltungService;
+    private final LagerService lagerService;
 
-    public ExternalInventoryImportService() {
+    public ExterneBestandsaenderungService() {
         super("ExternalImportServiceThread");
-        drinkManagementService = DrinkManagementService.INSTANCE.getInstance();
-        drinkStorageService = new CsvDrinkStorageService();
+        getraenkeVerwaltungService = GetraenkeVerwaltungService.INSTANCE.getInstance();
+        lagerService = new CsvLagerService();
     }
 
     public void run() {
@@ -34,16 +34,15 @@ public class ExternalInventoryImportService extends Thread {
     }
 
     private void importDrinks() {
-        File inventory = new File(AppConfig.DONE_CSV);
+        File inventory = new File(AppKonfiguration.DONE_CSV);
         if (inventory.exists()) {
-            drinkStorageService.load(AppConfig.DONE_CSV).forEach(drink -> {
+            lagerService.load(AppKonfiguration.DONE_CSV).forEach(drink -> {
                 Platform.runLater(() -> {
                     try {
-                        drinkManagementService.updateQuantity(drink.getName(), drink.getQuantity());
+                        getraenkeVerwaltungService.updateQuantity(drink.getName(), drink.getAnzahl());
                     } catch (
-                            DrinkQuantityNegativeException |
-                            DrinkNotFoundException |
-                            DrinkDuplicateException e) {
+                            GetraenkeBestandNegativException | GetraenkNichtGefundenException
+                            | GetraenkDuplikatException e) {
                         e.printStackTrace();
                     }
                 });

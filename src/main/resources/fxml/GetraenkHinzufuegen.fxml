@@ -3,7 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<GridPane xmlns:fx="http://javafx.com/fxml" fx:id="mainPane" xmlns="http://javafx.com/javafx/17.0.2-ea"
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:id="mainPane"
+          xmlns="http://javafx.com/javafx/17.0.2-ea"
           fx:controller="de.mobile.university.Lagerverwaltung.gui.controller.GetraenHinzufuegenController"
           alignment="CENTER" hgap="10" vgap="10">
     <padding>
@@ -11,10 +12,11 @@
     </padding>
 
     <Label text="Name:"/>
-    <TextField fx:id="nameField" GridPane.columnIndex="1"/>
+    <TextField fx:id="nameFeld" GridPane.columnIndex="1"/>
 
-    <Label text="Quantity:" GridPane.rowIndex="1"/>
-    <TextField fx:id="quantityField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Label text="Anzahl:" GridPane.rowIndex="1"/>
+    <TextField fx:id="anzahlFeld" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-    <Button text="Add Drink" onAction="#addDrink" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <Button text="Hinzufuegen" onAction="#getraenkHinzufuegen"
+            GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 </GridPane>

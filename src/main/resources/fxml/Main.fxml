@@ -4,7 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainPane" xmlns="http://javafx.com/javafx/17.0.2-ea"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainPane"
+            xmlns="http://javafx.com/javafx/17.0.2-ea"
             fx:controller="de.mobile.university.Lagerverwaltung.gui.controller.MainController">
     <top>
         <VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" styleClass="menu-bar"

@@ -1,15 +1,15 @@
-package de.mobile.university.WarehouseManager.model;
+package de.mobile.university.Lagerverwaltung.model;
 
-public class Drink {
+public class Getraenk {
     private String name;
-    private int quantity;
+    private int anzahl;
 
-    public Drink() {
+    public Getraenk() {
     }
 
-    public Drink(String name, int quantity) {
+    public Getraenk(String name, int anzahl) {
         this.name = name;
-        this.quantity = quantity;
+        this.anzahl = anzahl;
     }
 
     public String getName() {
@@ -20,12 +20,12 @@ public class Drink {
         this.name = name;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getAnzahl() {
+        return anzahl;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setAnzahl(int anzahl) {
+        this.anzahl = anzahl;
     }
 
 }

@@ -1,7 +1,7 @@
-package de.mobile.university.WarehouseManager.gui.view;
+package de.mobile.university.Lagerverwaltung.gui.view;
 
-import de.mobile.university.WarehouseManager.model.Drink;
-import de.mobile.university.WarehouseManager.service.DrinkManagementService;
+import de.mobile.university.Lagerverwaltung.model.Getraenk;
+import de.mobile.university.Lagerverwaltung.service.GetraenkeVerwaltungService;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -11,14 +11,14 @@ import javafx.scene.layout.GridPane;
 
 import java.util.List;
 
-public class DrinkManagementView extends GridPane {
+public class GetraenkeUebersichtView extends GridPane {
 
-    private final DrinkManagementService drinkManagementService;
-    private final DrinkAddView drinkAddView;
+    private final GetraenkeVerwaltungService getraenkeVerwaltungService;
+    private final GetraenHinzufuegenView getraenHinzufuegenView;
 
-    public DrinkManagementView() {
-        drinkManagementService = DrinkManagementService.INSTANCE.getInstance();
-        drinkAddView = new DrinkAddView();
+    public GetraenkeUebersichtView() {
+        getraenkeVerwaltungService = GetraenkeVerwaltungService.INSTANCE.getInstance();
+        getraenHinzufuegenView = new GetraenHinzufuegenView();
         createDrinkList();
         createTotalQuantityLabel();
         createAddButton();
@@ -29,20 +29,21 @@ public class DrinkManagementView extends GridPane {
     }
 
     private void createDrinkList() {
-        TableView<Drink> tableView = new TableView<>();
+        TableView<Getraenk> tableView = new TableView<>();
         tableView.setPrefWidth(1100);
         tableView.setPrefHeight(500);
+        tableView.setPlaceholder(new Label("Keine Getraenke vorhanden"));
 
-        TableColumn<Drink, String> nameCol = new TableColumn<>("Name");
+        TableColumn<Getraenk, String> nameCol = new TableColumn<>("Name");
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         // Set column to take the available width
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        TableColumn<Drink, Integer> quantityCol = new TableColumn<>("Quantity");
-        quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        TableColumn<Getraenk, Integer> quantityCol = new TableColumn<>("Anzahl");
+        quantityCol.setCellValueFactory(new PropertyValueFactory<>("anzahl"));
 
-        TableColumn<Drink, Void> changeCol = new TableColumn<>("Inventory Change (+/-)");
+        TableColumn<Getraenk, Void> changeCol = new TableColumn<>("Bestandsaenderung (+/-)");
         changeCol.setCellFactory(col -> new TableCell<>() {
             private final TextField textField = new TextField();
 
@@ -50,8 +51,8 @@ public class DrinkManagementView extends GridPane {
                 textField.setOnKeyPressed(e -> {
                     if (e.getCode() == KeyCode.ENTER) {
                         int changeValue = Integer.parseInt(textField.getText());
-                        Drink drink = getTableView().getItems().get(getIndex());
-                        drinkManagementService.updateQuantity(drink.getName(), changeValue);
+                        Getraenk getraenk = getTableView().getItems().get(getIndex());
+                        getraenkeVerwaltungService.updateQuantity(getraenk.getName(), changeValue);
                     }
                 });
             }
@@ -85,21 +86,22 @@ public class DrinkManagementView extends GridPane {
 
         // Disable selection
         tableView.setSelectionModel(null);
-        tableView.setItems(drinkManagementService.getDrinks());
+        tableView.setItems(getraenkeVerwaltungService.getDrinks());
 
         add(tableView, 0, 0, 2, 1);
     }
 
     private void createTotalQuantityLabel() {
-        int totalQuantity = calculateTotalQuantity(drinkManagementService.getDrinks());
-        Label totalLabel = new Label("Total Quantity: " + totalQuantity);
+        int totalQuantity = calculateTotalQuantity(getraenkeVerwaltungService.getDrinks());
+        Label totalLabel = new Label("Gesamtsumme: " + totalQuantity);
 
         // Add a listener to update the label when the underlying list changes
-        drinkManagementService.getDrinks().addListener((ListChangeListener<Drink>) c -> {
+        getraenkeVerwaltungService.getDrinks().addListener((ListChangeListener<Getraenk>) c -> {
             while (c.next()) {
                 if (c.wasUpdated() || c.wasAdded() || c.wasRemoved()) {
-                    int newTotalQuantity = calculateTotalQuantity(drinkManagementService.getDrinks());
-                    totalLabel.setText("Total Quantity: " + newTotalQuantity);
+                    int newTotalQuantity = calculateTotalQuantity(
+                            getraenkeVerwaltungService.getDrinks());
+                    totalLabel.setText("Gesamtsumme: " + newTotalQuantity);
                 }
             }
         });
@@ -109,22 +111,20 @@ public class DrinkManagementView extends GridPane {
         add(totalLabel, 0, 1, 2, 1);
     }
 
-    private void createAddButton() {
-        Button addDrinkButton = new Button("Add Drink");
-        addDrinkButton.setOnAction(e -> drinkAddView.showAddDrinkDialog());
-        add(addDrinkButton, 0, 2);
-    }
-
     private void createExitButton() {
-        Button exitButton = new Button("Exit");
+        Button exitButton = new Button("Beenden");
         exitButton.setOnAction(e -> System.exit(0));
-
-        // Set the horizontal alignment to RIGHT for the exit button
-        setHalignment(exitButton, javafx.geometry.HPos.RIGHT);
-        add(exitButton, 1, 2);
+        add(exitButton, 0, 2);
     }
 
-    private int calculateTotalQuantity(List<Drink> drinks) {
-        return drinks.stream().mapToInt(Drink::getQuantity).sum();
+    private void createAddButton() {
+        Button addDrinkButton = new Button("Getraenk hinzufuegen");
+        setHalignment(addDrinkButton, javafx.geometry.HPos.RIGHT);
+        addDrinkButton.setOnAction(e -> getraenHinzufuegenView.showAddDrinkDialog());
+        add(addDrinkButton, 1, 2);
+    }
+
+    private int calculateTotalQuantity(List<Getraenk> getraenke) {
+        return getraenke.stream().mapToInt(Getraenk::getAnzahl).sum();
     }
 }

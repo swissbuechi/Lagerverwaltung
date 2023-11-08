@@ -1,6 +1,6 @@
-package de.mobile.university.WarehouseManager.gui;
+package de.mobile.university.Lagerverwaltung.gui;
 
-import de.mobile.university.WarehouseManager.config.AppConfig;
+import de.mobile.university.Lagerverwaltung.konfiguration.AppKonfiguration;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,11 +28,13 @@ public class MainGui extends Application {
     }
 
     private void buildMainView(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/MainView.fxml")));
-        primaryStage.setTitle(AppConfig.APP_NAME);
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass()
+                .getResource("/fxml/Main.fxml")));
+        primaryStage.setTitle(AppKonfiguration.APP_NAME);
         primaryStage.setMinWidth(400);
         primaryStage.setMinHeight(300);
-        primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("images/logo.png")).toString()));
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                .getClassLoader().getResource("images/logo.png")).toString()));
         primaryStage.setOnCloseRequest(t -> System.exit(0));
         Scene scene = new Scene(root, 1200, 600);
         scene.getStylesheets().add("css/stylesheet.css");

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>groupId</groupId>
-    <artifactId>WarehouseManager</artifactId>
+    <artifactId>Lagerverwaltung</artifactId>
     <version>1.0.0</version>
     <build>
         <plugins>
@@ -37,13 +37,13 @@
                                 <generatePkg>false</generatePkg>
                             </macConfig>
                             <platform>auto</platform>
-                            <mainClass>de.mobile.university.WarehouseManager.WarehouseManagerApplication</mainClass>
+                            <mainClass>de.mobile.university.Lagerverwaltung.LagerverwaltungApplikation</mainClass>
                             <bundleJre>true</bundleJre>
                             <administratorRequired>false</administratorRequired>
                             <organizationName>SRH Fernhochschule - The Mobile University</organizationName>
                             <organizationUrl>https://www.mobile-university.de</organizationUrl>
                             <organizationEmail>info@mobile-university.de</organizationEmail>
-                            <url>https://github.com/swissbuechi/WarehouseManager</url>
+                            <url>https://github.com/swissbuechi/Lagerverwaltung</url>
                         </configuration>
                     </execution>
                 </executions>

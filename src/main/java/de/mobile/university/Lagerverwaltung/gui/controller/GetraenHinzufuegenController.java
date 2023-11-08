@@ -1,31 +1,31 @@
-package de.mobile.university.WarehouseManager.gui.controller;
+package de.mobile.university.Lagerverwaltung.gui.controller;
 
-import de.mobile.university.WarehouseManager.service.DrinkManagementService;
+import de.mobile.university.Lagerverwaltung.service.GetraenkeVerwaltungService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-public class DrinkAddViewController {
+public class GetraenHinzufuegenController {
 
-    private final DrinkManagementService drinkManagementService;
+    private final GetraenkeVerwaltungService getraenkeVerwaltungService;
 
     @FXML
     private GridPane mainPane;
 
     @FXML
-    private TextField nameField;
+    private TextField nameFeld;
 
     @FXML
-    private TextField quantityField;
+    private TextField anzahlFeld;
 
-    public DrinkAddViewController() {
-        drinkManagementService = DrinkManagementService.INSTANCE.getInstance();
+    public GetraenHinzufuegenController() {
+        getraenkeVerwaltungService = GetraenkeVerwaltungService.INSTANCE.getInstance();
     }
 
     @FXML
-    private void addDrink() {
-        String name = nameField.getText();
-        int quantity = Integer.parseInt(quantityField.getText());
-        drinkManagementService.add(name, quantity);
+    private void getraenkHinzufuegen() {
+        String name = nameFeld.getText();
+        int anzahl = Integer.parseInt(anzahlFeld.getText());
+        getraenkeVerwaltungService.add(name, anzahl);
     }
 }

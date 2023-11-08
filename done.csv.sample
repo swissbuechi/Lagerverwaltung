@@ -1,4 +1,5 @@
-name,quantity
+name,anzahl
 Sprite,+10
 Cola,+20
 Wasser,-1
+Orangensaft, +5

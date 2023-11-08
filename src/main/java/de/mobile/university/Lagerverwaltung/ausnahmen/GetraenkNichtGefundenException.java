@@ -1,4 +1,4 @@
-package de.mobile.university.Lagerverwaltung.exception;
+package de.mobile.university.Lagerverwaltung.ausnahmen;
 
 public class GetraenkNichtGefundenException extends NullPointerException {
 
