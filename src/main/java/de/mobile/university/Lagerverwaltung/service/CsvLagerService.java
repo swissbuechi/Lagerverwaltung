@@ -1,7 +1,7 @@
-package de.mobile.university.WarehouseManager.service;
+package de.mobile.university.Lagerverwaltung.service;
 
-import de.mobile.university.WarehouseManager.config.AppConfig;
-import de.mobile.university.WarehouseManager.model.Drink;
+import de.mobile.university.Lagerverwaltung.config.AppConfig;
+import de.mobile.university.Lagerverwaltung.model.Getraenk;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,16 +10,16 @@ import java.util.List;
 public class CsvDrinkStorageService implements DrinkStorageService {
 
     @Override
-    public void save(List<Drink> drinks) {
-        System.out.println("Saving to file: " + AppConfig.INVENTORY_FILE);
-        try (FileWriter writer = new FileWriter(AppConfig.INVENTORY_FILE)) {
+    public void save(List<Getraenk> getraenke) {
+        System.out.println("Saving to file: " + AppConfig.LAGER_CSV);
+        try (FileWriter writer = new FileWriter(AppConfig.LAGER_CSV)) {
 
             // Write headers
             writer.write("name,quantity\n");
 
             // Write data
-            for (Drink drink : drinks) {
-                writer.write(drink.getName() + "," + drink.getQuantity() + "\n");
+            for (Getraenk getraenk : getraenke) {
+                writer.write(getraenk.getName() + "," + getraenk.getQuantity() + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -27,9 +27,9 @@ public class CsvDrinkStorageService implements DrinkStorageService {
     }
 
     @Override
-    public List<Drink> load(String filename) {
+    public List<Getraenk> load(String filename) {
         System.out.println("Loading from file: " + filename);
-        List<Drink> result = new ArrayList<Drink>();
+        List<Getraenk> result = new ArrayList<Getraenk>();
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(new File(filename)));
@@ -59,7 +59,7 @@ public class CsvDrinkStorageService implements DrinkStorageService {
                         throw new ArrayIndexOutOfBoundsException();
 
                     // Convert data to drink record
-                    result.add(new Drink(items[0], Integer.parseInt(items[1])));
+                    result.add(new Getraenk(items[0], Integer.parseInt(items[1])));
                 } catch (ArrayIndexOutOfBoundsException |
                          NumberFormatException |
                          NullPointerException e) {

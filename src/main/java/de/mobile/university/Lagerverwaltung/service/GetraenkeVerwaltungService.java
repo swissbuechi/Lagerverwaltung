@@ -1,10 +1,10 @@
-package de.mobile.university.WarehouseManager.service;
+package de.mobile.university.Lagerverwaltung.service;
 
-import de.mobile.university.WarehouseManager.config.AppConfig;
-import de.mobile.university.WarehouseManager.exception.DrinkDuplicateException;
-import de.mobile.university.WarehouseManager.exception.DrinkNotFoundException;
-import de.mobile.university.WarehouseManager.exception.DrinkQuantityNegativeException;
-import de.mobile.university.WarehouseManager.model.Drink;
+import de.mobile.university.Lagerverwaltung.config.AppConfig;
+import de.mobile.university.Lagerverwaltung.exception.DrinkDuplicateException;
+import de.mobile.university.Lagerverwaltung.exception.DrinkNotFoundException;
+import de.mobile.university.Lagerverwaltung.exception.DrinkQuantityNegativeException;
+import de.mobile.university.Lagerverwaltung.model.Getraenk;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -19,10 +19,10 @@ public enum DrinkManagementService {
     INSTANCE();
 
     private final DrinkStorageService drinkStorageService;
-    private ObservableList<Drink> drinks;
+    private ObservableList<Getraenk> getraenke;
 
     DrinkManagementService() {
-        drinks = FXCollections.observableArrayList(new ArrayList<>());
+        getraenke = FXCollections.observableArrayList(new ArrayList<>());
         drinkStorageService = new CsvDrinkStorageService();
         loadDrinks();
     }
@@ -31,44 +31,44 @@ public enum DrinkManagementService {
         return INSTANCE;
     }
 
-    public ObservableList<Drink> getDrinks() {
-        return drinks;
+    public ObservableList<Getraenk> getDrinks() {
+        return getraenke;
     }
 
     private void loadDrinks() {
-        if (new File(AppConfig.INVENTORY_FILE).exists()) {
-            drinks = FXCollections.observableArrayList(drinkStorageService.load(AppConfig.INVENTORY_FILE));
+        if (new File(AppConfig.LAGER_CSV).exists()) {
+            getraenke = FXCollections.observableArrayList(drinkStorageService.load(AppConfig.LAGER_CSV));
             sortByQuantity();
         } else {
-            drinks = FXCollections.observableArrayList(new ArrayList<>());
+            getraenke = FXCollections.observableArrayList(new ArrayList<>());
         }
     }
 
     private void sortByQuantity() {
         System.out.println("Sorting by quantity");
-        this.drinks.sort(Comparator.comparingInt(Drink::getQuantity).thenComparing(Drink::getName));
+        this.getraenke.sort(Comparator.comparingInt(Getraenk::getQuantity).thenComparing(Getraenk::getName));
     }
 
     public synchronized void updateQuantity(String name, int quantity) {
         int index = findIndexByName(name);
         if (index != -1) {
-            int newQuantity = drinks.get(index).getQuantity() + quantity;
-            System.out.println("Updating quantity of: " + name + " from: " + drinks.get(index).getQuantity() + " to: " + newQuantity);
+            int newQuantity = getraenke.get(index).getQuantity() + quantity;
+            System.out.println("Updating quantity of: " + name + " from: " + getraenke.get(index).getQuantity() + " to: " + newQuantity);
             if (newQuantity < 0) {
                 throw new DrinkQuantityNegativeException(name);
             }
-            drinks.add(new Drink(name, newQuantity));
-            drinks.remove(index);
+            getraenke.add(new Getraenk(name, newQuantity));
+            getraenke.remove(index);
             sortByQuantity();
-            drinkStorageService.save(drinks);
+            drinkStorageService.save(getraenke);
         } else {
             throw new DrinkNotFoundException(name);
         }
     }
 
     private int findIndexByName(String name) {
-        for (int i = 0; i < drinks.size(); i++) {
-            if (Objects.equals(drinks.get(i).getName(), name)) {
+        for (int i = 0; i < getraenke.size(); i++) {
+            if (Objects.equals(getraenke.get(i).getName(), name)) {
                 return i;
             }
         }
@@ -81,14 +81,14 @@ public enum DrinkManagementService {
             throw new DrinkQuantityNegativeException(name);
         }
         if (!drinkAlreadyExists(name)) {
-            drinks.add(new Drink(name, quantity));
+            getraenke.add(new Getraenk(name, quantity));
         }
         sortByQuantity();
-        drinkStorageService.save(drinks);
+        drinkStorageService.save(getraenke);
     }
 
     private boolean drinkAlreadyExists(String name) {
-        if (drinks.stream().anyMatch(d -> Objects.equals(d.getName().toLowerCase(), name.toLowerCase()))) {
+        if (getraenke.stream().anyMatch(d -> Objects.equals(d.getName().toLowerCase(), name.toLowerCase()))) {
             throw new DrinkDuplicateException(name);
         }
         return false;

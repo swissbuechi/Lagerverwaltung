@@ -1,9 +1,9 @@
-package de.mobile.university.WarehouseManager.service;
+package de.mobile.university.Lagerverwaltung.service;
 
-import de.mobile.university.WarehouseManager.config.AppConfig;
-import de.mobile.university.WarehouseManager.exception.DrinkDuplicateException;
-import de.mobile.university.WarehouseManager.exception.DrinkNotFoundException;
-import de.mobile.university.WarehouseManager.exception.DrinkQuantityNegativeException;
+import de.mobile.university.Lagerverwaltung.config.AppConfig;
+import de.mobile.university.Lagerverwaltung.exception.DrinkDuplicateException;
+import de.mobile.university.Lagerverwaltung.exception.DrinkNotFoundException;
+import de.mobile.university.Lagerverwaltung.exception.DrinkQuantityNegativeException;
 import javafx.application.Platform;
 
 import java.io.File;
@@ -34,9 +34,9 @@ public class ExternalInventoryImportService extends Thread {
     }
 
     private void importDrinks() {
-        File inventory = new File(AppConfig.EXTERNAL_INVENTORY_FILE);
+        File inventory = new File(AppConfig.DONE_CSV);
         if (inventory.exists()) {
-            drinkStorageService.load(AppConfig.EXTERNAL_INVENTORY_FILE).forEach(drink -> {
+            drinkStorageService.load(AppConfig.DONE_CSV).forEach(drink -> {
                 Platform.runLater(() -> {
                     try {
                         drinkManagementService.updateQuantity(drink.getName(), drink.getQuantity());
