@@ -1,4 +1,3 @@
-// DrinkAddView.java
 package de.mobile.university.WarehouseManager.gui.view;
 
 import javafx.fxml.FXMLLoader;

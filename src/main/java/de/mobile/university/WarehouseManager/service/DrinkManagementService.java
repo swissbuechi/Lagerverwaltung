@@ -5,8 +5,6 @@ import de.mobile.university.WarehouseManager.exception.DrinkDuplicateException;
 import de.mobile.university.WarehouseManager.exception.DrinkNotFoundException;
 import de.mobile.university.WarehouseManager.exception.DrinkQuantityNegativeException;
 import de.mobile.university.WarehouseManager.model.Drink;
-import de.mobile.university.WarehouseManager.storage.CsvDrinkStorageService;
-import de.mobile.university.WarehouseManager.storage.DrinkStorageService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

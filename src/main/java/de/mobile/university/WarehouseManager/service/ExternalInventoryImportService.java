@@ -4,8 +4,6 @@ import de.mobile.university.WarehouseManager.config.AppConfig;
 import de.mobile.university.WarehouseManager.exception.DrinkDuplicateException;
 import de.mobile.university.WarehouseManager.exception.DrinkNotFoundException;
 import de.mobile.university.WarehouseManager.exception.DrinkQuantityNegativeException;
-import de.mobile.university.WarehouseManager.storage.CsvDrinkStorageService;
-import de.mobile.university.WarehouseManager.storage.DrinkStorageService;
 import javafx.application.Platform;
 
 import java.io.File;

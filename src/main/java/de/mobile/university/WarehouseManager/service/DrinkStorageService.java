@@ -1,4 +1,4 @@
-package de.mobile.university.WarehouseManager.storage;
+package de.mobile.university.WarehouseManager.service;
 
 import de.mobile.university.WarehouseManager.model.Drink;
 
