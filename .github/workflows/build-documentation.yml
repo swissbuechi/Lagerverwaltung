@@ -1,0 +1,33 @@
+name: Build LaTeX document
+
+on:
+  workflow_dispatch:
+  release:
+    types: [ published ]
+
+permissions:
+  contents: write
+
+env:
+  DOCUMENT: "BuechiRaphael_2023335_BOPRO2"
+
+jobs:
+  build:
+    name: Build LaTeX document
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v4
+
+      - uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: 'doc'
+          root_file: '${{ env.DOCUMENT }}.tex'
+
+      - name: Upload pdf to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          promote: true
+          file: 'doc/${{ env.DOCUMENT }}.pdf'
+          tag: ${{ github.ref }}
