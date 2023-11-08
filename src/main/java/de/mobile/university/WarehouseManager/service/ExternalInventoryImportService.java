@@ -9,8 +9,8 @@ import javafx.application.Platform;
 import java.io.File;
 
 public class ExternalInventoryImportService extends Thread {
-    private DrinkManagementService drinkManagementService;
-    private DrinkStorageService drinkStorageService;
+    private final DrinkManagementService drinkManagementService;
+    private final DrinkStorageService drinkStorageService;
 
     public ExternalInventoryImportService() {
         super("ExternalImportServiceThread");
@@ -40,7 +40,10 @@ public class ExternalInventoryImportService extends Thread {
                 Platform.runLater(() -> {
                     try {
                         drinkManagementService.updateQuantity(drink.getName(), drink.getQuantity());
-                    } catch (DrinkQuantityNegativeException | DrinkNotFoundException | DrinkDuplicateException e) {
+                    } catch (
+                            DrinkQuantityNegativeException |
+                            DrinkNotFoundException |
+                            DrinkDuplicateException e) {
                         e.printStackTrace();
                     }
                 });

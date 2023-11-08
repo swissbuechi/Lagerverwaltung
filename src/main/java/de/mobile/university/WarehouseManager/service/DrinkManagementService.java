@@ -18,10 +18,10 @@ public enum DrinkManagementService {
 
     INSTANCE();
 
-    private ObservableList<Drink> drinks;
     private final DrinkStorageService drinkStorageService;
+    private ObservableList<Drink> drinks;
 
-    private DrinkManagementService() {
+    DrinkManagementService() {
         drinks = FXCollections.observableArrayList(new ArrayList<>());
         drinkStorageService = new CsvDrinkStorageService();
         loadDrinks();
@@ -36,7 +36,7 @@ public enum DrinkManagementService {
     }
 
     private void loadDrinks() {
-        if (new File(AppConfig.EXTERNAL_INVENTORY_FILE).exists()) {
+        if (new File(AppConfig.INVENTORY_FILE).exists()) {
             drinks = FXCollections.observableArrayList(drinkStorageService.load(AppConfig.INVENTORY_FILE));
             sortByQuantity();
         } else {

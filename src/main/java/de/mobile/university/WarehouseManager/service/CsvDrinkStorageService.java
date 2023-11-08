@@ -4,7 +4,8 @@ import de.mobile.university.WarehouseManager.config.AppConfig;
 import de.mobile.university.WarehouseManager.model.Drink;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CsvDrinkStorageService implements DrinkStorageService {
 
@@ -40,7 +41,8 @@ public class CsvDrinkStorageService implements DrinkStorageService {
             String line = br.readLine();
 
             // Make sure file has correct headers
-            if (line == null) throw new IllegalArgumentException("File is empty");
+            if (line == null)
+                throw new IllegalArgumentException("File is empty");
             if (!line.equals("name,quantity"))
                 throw new IllegalArgumentException("File has wrong columns: " + line);
 
@@ -53,11 +55,14 @@ public class CsvDrinkStorageService implements DrinkStorageService {
 
                     // If there are too many entries, throw a dummy exception, if
                     // there are too few, the same exception will be thrown later
-                    if (items.length > 2) throw new ArrayIndexOutOfBoundsException();
+                    if (items.length > 2)
+                        throw new ArrayIndexOutOfBoundsException();
 
                     // Convert data to drink record
                     result.add(new Drink(items[0], Integer.parseInt(items[1])));
-                } catch (ArrayIndexOutOfBoundsException | NumberFormatException | NullPointerException e) {
+                } catch (ArrayIndexOutOfBoundsException |
+                         NumberFormatException |
+                         NullPointerException e) {
 
                     // Caught errors indicate a problem with data format -> Print warning and continue
                     System.out.println("Invalid line: " + line);
