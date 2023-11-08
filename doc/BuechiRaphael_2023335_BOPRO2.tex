@@ -17,15 +17,15 @@
 \listoffigures
 
 % Chapters--------------------------------------------------------------------
-\input{chapters/content}
-
-% Bibliography----------------------------------------------------------------
-% \printbibliography[title=Literaturverzeichnis]
-% \addcontentsline{toc}{chapter}{Literaturverzeichnis}
-
-% Appendix--------------------------------------------------------------------
-% \appendix
-% \chapter{Anlagen}
-% \input{general/appendix}
+\input{chapters/1-intro}
+\newgeometry{
+    top=20mm,
+    right=5mm,
+    bottom=10mm,
+    left=20mm,
+}
+\input{chapters/2-code}
+\input{chapters/3-demo}
+\restoregeometry
 
 \end{document}
