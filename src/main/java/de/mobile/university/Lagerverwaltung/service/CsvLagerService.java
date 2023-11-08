@@ -9,15 +9,14 @@ import java.util.List;
 
 public class CsvLagerService implements LagerService {
 
+    //Speichert die Getraenke in einer CSV-Datei
     @Override
-    public void save(List<Getraenk> getraenke) {
-        System.out.println("Saving to file: " + AppKonfiguration.LAGER_CSV);
+    public void speichern(List<Getraenk> getraenke) {
+        System.out.println("Speichern in Datei: " + AppKonfiguration.LAGER_CSV);
         try (FileWriter writer = new FileWriter(AppKonfiguration.LAGER_CSV)) {
+            writer.write("name,anzahl\n"); //Erstellt die Spaltennamen
 
-            // Write headers
-            writer.write("name,anzahl\n");
-
-            // Write data
+            //Schreibt die Objekte pro Zeile in die CSV-Datei
             for (Getraenk getraenk : getraenke) {
                 writer.write(getraenk.getName() + "," + getraenk.getAnzahl() + "\n");
             }
@@ -26,51 +25,53 @@ public class CsvLagerService implements LagerService {
         }
     }
 
+    //Liest die Getraenke aus einer CSV-Datei
     @Override
-    public List<Getraenk> load(String filename) {
-        System.out.println("Loading from file: " + filename);
-        List<Getraenk> result = new ArrayList<Getraenk>();
-        BufferedReader br = null;
+    public List<Getraenk> laden(String filename) {
+        System.out.println("Lade aus Datei: " + filename);
+        List<Getraenk> getraenke = new ArrayList<Getraenk>();
+        BufferedReader leser = null;
         try {
-            br = new BufferedReader(new FileReader(new File(filename)));
+            leser = new BufferedReader(new FileReader(filename));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         try {
-            // Read first line
-            String line = br.readLine();
+            // Lies erste Zeile
+            String zeile = leser.readLine();
 
-            // Make sure file has correct headers
-            if (line == null) throw new IllegalArgumentException("File is empty");
-            if (!line.equals("name,anzahl"))
-                throw new IllegalArgumentException("File has wrong columns: " + line);
+            // Ueberpruefe, ob die Datei die richtigen Spaltennamen hat
+            if (zeile == null)
+                throw new IllegalArgumentException("Datei ist leer");
+            if (!zeile.equals("name,anzahl"))
+                throw new IllegalArgumentException("File has wrong columns: " + zeile);
 
-            // Run through following lines
-            while ((line = br.readLine()) != null) {
+            // Liest alle weiteren Zeilen ein
+            while ((zeile = leser.readLine()) != null) {
 
-                // Break line into entries using comma
-                String[] items = line.split(",");
+                // Trennt die Spalten an den Kommas
+                String[] items = zeile.split(",");
                 try {
 
-                    // If there are too many entries, throw a dummy exception, if
-                    // there are too few, the same exception will be thrown later
-                    if (items.length > 2) throw new ArrayIndexOutOfBoundsException();
+                    if (items.length > 2)
+                        throw new ArrayIndexOutOfBoundsException();
 
-                    // Convert data to drink record
-                    result.add(new Getraenk(items[0], Integer.parseInt(items[1])));
-                } catch (ArrayIndexOutOfBoundsException | NumberFormatException |
+                    // Erstellt ein neues Getraenk-Objekt und fuegt es der
+                    // Liste hinzu
+                    getraenke.add(new Getraenk(items[0],
+                            Integer.parseInt(items[1])));
+                } catch (ArrayIndexOutOfBoundsException |
+                         NumberFormatException |
                          NullPointerException e) {
-
-                    // Caught errors indicate a problem with data format -> Print warning and continue
-                    System.out.println("Invalid line: " + line);
+                    System.out.println("Ungueltige Zeile: " + zeile);
                 }
             }
-            return result;
+            return getraenke;
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
             try {
-                br.close();
+                leser.close(); //Schliesst den BufferedReader
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

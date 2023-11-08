@@ -14,28 +14,24 @@ import java.util.Objects;
 public class MainGui extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
-
-        try {
-            buildMainView(primaryStage);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void start(Stage primaryStage) throws IOException {
+        buildMainView(primaryStage);
     }
 
-    public void show() {
-        launch();
-    }
-
+    // Erstellt die Hauptansicht der Anwendung
     private void buildMainView(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass()
-                .getResource("/fxml/Main.fxml")));
+        Parent root =
+                FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
+                        "/fxml/Main.fxml")));
         primaryStage.setTitle(AppKonfiguration.APP_NAME);
         primaryStage.setMinWidth(400);
         primaryStage.setMinHeight(300);
         primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                 .getClassLoader().getResource("images/logo.png")).toString()));
+
+        // Beendet die Anwendung, wenn das Fenster geschlossen wird
         primaryStage.setOnCloseRequest(t -> System.exit(0));
+
         Scene scene = new Scene(root, 1200, 600);
         scene.getStylesheets().add("css/stylesheet.css");
         primaryStage.setScene(scene);

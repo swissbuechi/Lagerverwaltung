@@ -13,8 +13,8 @@ public class GetraenHinzufuegenView {
 
     public void showAddDrinkDialog() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/fxml/GetraenkHinzufuegen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml" +
+                    "/GetraenkHinzufuegen.fxml"));
             GridPane gridPane = loader.load();
 
             Stage getraenkHinzufuegenStage = new Stage();
@@ -22,11 +22,12 @@ public class GetraenHinzufuegenView {
             getraenkHinzufuegenStage.setTitle("Getraenk hinzufuegen");
 
             Scene scene = new Scene(gridPane, 300, 150);
-            scene.getStylesheets().add(getClass()
-                    .getResource("/css/stylesheet.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/css" +
+                    "/stylesheet.css").toExternalForm());
 
-            getraenkHinzufuegenStage.getIcons().add(new Image(getClass()
-                    .getResourceAsStream("/images/logo.png")));
+            getraenkHinzufuegenStage.getIcons()
+                    .add(new Image(getClass()
+                            .getResourceAsStream("/images/logo.png")));
 
             getraenkHinzufuegenStage.setScene(scene);
             getraenkHinzufuegenStage.showAndWait();

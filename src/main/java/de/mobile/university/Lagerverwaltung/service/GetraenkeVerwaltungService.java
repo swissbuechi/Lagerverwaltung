@@ -1,9 +1,9 @@
 package de.mobile.university.Lagerverwaltung.service;
 
-import de.mobile.university.Lagerverwaltung.konfiguration.AppKonfiguration;
 import de.mobile.university.Lagerverwaltung.ausnahmen.GetraenkDuplikatException;
 import de.mobile.university.Lagerverwaltung.ausnahmen.GetraenkNichtGefundenException;
 import de.mobile.university.Lagerverwaltung.ausnahmen.GetraenkeBestandNegativException;
+import de.mobile.university.Lagerverwaltung.konfiguration.AppKonfiguration;
 import de.mobile.university.Lagerverwaltung.model.Getraenk;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,74 +24,88 @@ public enum GetraenkeVerwaltungService {
     GetraenkeVerwaltungService() {
         getraenke = FXCollections.observableArrayList(new ArrayList<>());
         lagerService = new CsvLagerService();
-        loadDrinks();
+        ladeGetraenke();
     }
 
     public GetraenkeVerwaltungService getInstance() {
         return INSTANCE;
     }
 
-    public ObservableList<Getraenk> getDrinks() {
+    public ObservableList<Getraenk> getGetraenke() {
         return getraenke;
     }
 
-    private void loadDrinks() {
+    // Laedt die Getraenke aus der CSV-Datei wenn diese existiert
+    private void ladeGetraenke() {
         if (new File(AppKonfiguration.LAGER_CSV).exists()) {
-            getraenke = FXCollections.observableArrayList(lagerService.load(AppKonfiguration.LAGER_CSV));
-            sortByQuantity();
+            getraenke =
+                    FXCollections.observableArrayList(lagerService
+                            .laden(AppKonfiguration.LAGER_CSV));
+            sortierenNachAnzahlUndName();
         } else {
             getraenke = FXCollections.observableArrayList(new ArrayList<>());
         }
     }
 
-    private void sortByQuantity() {
-        System.out.println("Sorting by quantity");
-        this.getraenke.sort(Comparator.comparingInt(Getraenk::getAnzahl)
-                .thenComparing(Getraenk::getName));
-    }
-
-    public synchronized void updateQuantity(String name, int quantity) {
-        int index = findIndexByName(name);
-        if (index != -1) {
-            int newQuantity = getraenke.get(index).getAnzahl() + quantity;
-            System.out.println("Updating quantity of: " + name + " from: " +
-                    getraenke.get(index).getAnzahl() + " to: " + newQuantity);
-            if (newQuantity < 0) {
+    // Aktualisiert die Anzahl eines Getraenks
+    public synchronized void bestandesaenderung(String name,
+                                                int bestandesaenderung) {
+        int index = findeIndexAnhandName(name);
+        if (index != -1) { // Getraenk gefunden
+            // Aktuelle Anzahl + Bestandsaenderung = neue Anzahl
+            int neueAnzahl =
+                    getraenke.get(index).getAnzahl() + bestandesaenderung;
+            System.out.println("Bestandesenderung: " + name + " from: " +
+                    getraenke.get(index).getAnzahl() + " to: " + neueAnzahl);
+            if (neueAnzahl < 0) {
                 throw new GetraenkeBestandNegativException(name);
             }
-            getraenke.add(new Getraenk(name, newQuantity));
+            // getraenke.get(index).setAnzahl(neueAnzahl); // Funktioniert
+            // leider nicht mit ObservableList
             getraenke.remove(index);
-            sortByQuantity();
-            lagerService.save(getraenke);
+            getraenke.add(new Getraenk(name, neueAnzahl));
+            sortierenNachAnzahlUndName();
+            lagerService.speichern(getraenke); // Speichern der Getraenke im CSV
         } else {
             throw new GetraenkNichtGefundenException(name);
         }
     }
 
-    private int findIndexByName(String name) {
+    // Findet den Index eines Getraenks andhand vom Namen
+    private int findeIndexAnhandName(String name) {
         for (int i = 0; i < getraenke.size(); i++) {
             if (Objects.equals(getraenke.get(i).getName(), name)) {
                 return i;
             }
         }
-        return -1; // Not found
+        return -1;// Nicht gefunden
     }
 
-    public void add(String name, int quantity) {
-        System.out.println(("Adding: " + name + " with quantity: " + quantity));
-        if (quantity < 0) {
-            throw new GetraenkeBestandNegativException(name);
+    // Fuegt ein neues Getraenk hinzu
+    public void hinzufuegen(Getraenk getraenk) {
+        System.out.println(("Hinzufuegen: " + getraenk.getName() + " mit der " +
+                "Anzahl: " + getraenk.getAnzahl()));
+        if (getraenk.getAnzahl() < 0) {
+            throw new GetraenkeBestandNegativException(getraenk.getName());
         }
-        if (!drinkAlreadyExists(name)) {
-            getraenke.add(new Getraenk(name, quantity));
+        if (!getraenkBereitsVorhanden(getraenk.getName())) {
+            getraenke.add(getraenk);
         }
-        sortByQuantity();
-        lagerService.save(getraenke);
+        sortierenNachAnzahlUndName();
+        lagerService.speichern(getraenke); // Speichern der Getraenke in der CSV-Datei
     }
 
-    private boolean drinkAlreadyExists(String name) {
-        if (getraenke.stream().anyMatch(d -> Objects.equals
-                (d.getName().toLowerCase(), name.toLowerCase()))) {
+    private void sortierenNachAnzahlUndName() { //Tiefere Anzahl zuerst
+        System.out.println("Sortieren nach Anzahl und Name");
+        this.getraenke.sort(Comparator.comparingInt(Getraenk::getAnzahl)
+                .thenComparing(Getraenk::getName));
+    }
+
+    // Ueberprueft, ob ein Getraenk bereits vorhanden ist
+    // (Gross-/Kleinschreibung wird ignoriert)
+    private boolean getraenkBereitsVorhanden(String name) {
+        if (getraenke.stream().anyMatch(d -> Objects.equals(d.getName().toLowerCase(),
+                name.toLowerCase()))) {
             throw new GetraenkDuplikatException(name);
         }
         return false;

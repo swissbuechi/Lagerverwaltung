@@ -1,16 +1,13 @@
 package de.mobile.university.Lagerverwaltung.gui.controller;
 
+import de.mobile.university.Lagerverwaltung.model.Getraenk;
 import de.mobile.university.Lagerverwaltung.service.GetraenkeVerwaltungService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 
 public class GetraenHinzufuegenController {
 
     private final GetraenkeVerwaltungService getraenkeVerwaltungService;
-
-    @FXML
-    private GridPane mainPane;
 
     @FXML
     private TextField nameFeld;
@@ -19,13 +16,15 @@ public class GetraenHinzufuegenController {
     private TextField anzahlFeld;
 
     public GetraenHinzufuegenController() {
-        getraenkeVerwaltungService = GetraenkeVerwaltungService.INSTANCE.getInstance();
+        getraenkeVerwaltungService =
+                GetraenkeVerwaltungService.INSTANCE.getInstance();
     }
 
+    // Speichert das Getraenk, welches in den Textfeldern eingegeben wurde
     @FXML
     private void getraenkHinzufuegen() {
         String name = nameFeld.getText();
         int anzahl = Integer.parseInt(anzahlFeld.getText());
-        getraenkeVerwaltungService.add(name, anzahl);
+        getraenkeVerwaltungService.hinzufuegen(new Getraenk(name, anzahl));
     }
 }

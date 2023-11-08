@@ -5,7 +5,7 @@ import de.mobile.university.Lagerverwaltung.model.Getraenk;
 import java.util.List;
 
 public interface LagerService {
-    void save(List<Getraenk> getraenke);
+    void speichern(List<Getraenk> getraenke);
 
-    List<Getraenk> load(String filename);
+    List<Getraenk> laden(String filename);
 }
